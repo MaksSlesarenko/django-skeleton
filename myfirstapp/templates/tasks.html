@@ -1,9 +1,13 @@
-<h3>Tasks</h3>
-
-<ul>
 {% for task in tasks %}
-   <li>
-      <a>{{ task.title }} </a>
-   </li>
+   <tr>
+      <td>{{ task.title }}</td>
+      <td width="120">
+          {% if task.is_complete %}
+              <span class="label label-success" title="{{ task.complete_date }}"><i class="icon-white icon-ok"></i></span> {{ task.complete_date }}
+          {% else %}
+              <a href="{% url 'task_complete' task.id %}" class="btn btn-primary task-complete"><i class="icon-white icon-ok"></i> Complete</a>
+          {% endif %}
+      </td>
+      <td width="100"><a href="{% url 'task_delete' task.id %}" class="btn btn-danger task-delete"><i class="icon-white icon-trash"></i> Delete</a></td>
+   </tr>
 {% endfor %}
-</ul>
