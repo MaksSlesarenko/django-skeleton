@@ -1,0 +1,19 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+.sidebar-nav {
+    padding: 9px 0;
+}
+#ajax-spinner {
+    width: 180px;
+    height: 40px;
+    margin: 0 auto;
+    background: url("/static/img/loading.gif") 50% 50% no-repeat;
+    display: none;
+}
+#alert-messages {
+   width: 500px;
+   right: 20px;
+   position: absolute;
+}

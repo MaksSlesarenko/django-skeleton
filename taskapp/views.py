@@ -1,12 +1,12 @@
 from django.shortcuts import render_to_response
-from django.core import serializers
-from django.views.decorators.csrf import csrf_exempt
+from django.template import RequestContext
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-from myfirstapp.models import Task
-from myfirstapp.forms import TaskForm
+from taskapp.models import Task
+from taskapp.forms import TaskForm
 
 import json
 
@@ -16,11 +16,13 @@ def home(request):
     params["tasks"] = Task.objects.all()
     params['form'] = TaskForm()
     
-    return render_to_response('home.html', params)
+    messages.add_message(request, messages.SUCCESS, 'Deleted successfully.')
+    
+    return render_to_response('home.html', params, context_instance=RequestContext(request))
 
 def task_list(request):
     
-    return render_to_response('tasks.html', {'tasks': Task.objects.all()})
+    return render_to_response('list.html', {'tasks': Task.objects.all()})
 
 def task_delete(request, id):
     
@@ -35,7 +37,7 @@ def task_delete(request, id):
             messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
             result = 0
     else:
-        return HttpResponseRedirect('/404/')
+        return HttpResponseRedirect(reverse('task_home'))
         
     return HttpResponse(json.dumps({'result': result}), mimetype="application/json")
 
@@ -52,7 +54,7 @@ def task_complete(request, id):
             messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
             result = 0
     else:
-        return HttpResponseRedirect('/404/')
+        return HttpResponseRedirect(reverse('task_home'))
         
     return HttpResponse(json.dumps({'result': result}), mimetype="application/json")
 
@@ -71,6 +73,6 @@ def task_add(request):
             messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
             result = 0
     else:
-        return HttpResponseRedirect('/404/')
+        return HttpResponseRedirect(reverse('task_home'))
         
     return HttpResponse(json.dumps({'result': result}), mimetype="application/json")
