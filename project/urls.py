@@ -9,7 +9,8 @@ import settings
 import app.task.urls
 import app.accounts.urls
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
 
     # urls specific to this app
     url(r'^task/', include(app.task.urls)),

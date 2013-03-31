@@ -2,6 +2,7 @@ from django.contrib import messages
 
 import json
 
+
 class AjaxMessaging(object):
     def process_response(self, request, response):
         if request.is_ajax():
