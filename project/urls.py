@@ -7,11 +7,13 @@ admin.autodiscover()
 
 import settings
 import app.task.urls
+import app.accounts.urls
 
 urlpatterns = patterns('',
 
     # urls specific to this app
     url(r'^task/', include(app.task.urls)),
+    url(r'^accounts/', include(app.accounts.urls)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

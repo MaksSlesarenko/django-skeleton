@@ -16,8 +16,6 @@ def home(request):
     params["tasks"] = Task.objects.all()
     params['form'] = TaskForm()
     
-    messages.add_message(request, messages.SUCCESS, 'Deleted successfully.')
-    
     return render_to_response('home.html', params, context_instance=RequestContext(request))
 
 def task_list(request):

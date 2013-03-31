@@ -80,6 +80,9 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'sa7!a1cm3dc9vcmnty&amp;&amp;a=ibudkpk17r(^i5wk^y@u+v-fn&amp;9c'
 
@@ -127,6 +130,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'app.task',
+    'app.accounts',
 )
 
 

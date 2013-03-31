@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock%}
+
+{% block content %}
+
+    <style type="text/css">
+    .login-form {
+        margin-left: 65px;
+        width: 400px;
+    }
+    </style>
+    
+<div class="login-form">
+    <form action="{% url 'django.contrib.auth.views.login' %}" method="post" class="form-horizontal">
+        {% csrf_token %}
+        <fieldset>
+            {% if form.errors %}
+                <p class="alert alert-error">Your username and password didn't match. Please try again.</p>
+            {% endif %}
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">{{ form.username.label_tag }}</label>
+                <div class="controls">
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">{{ form.password.label_tag }}</label>
+                <div class="controls">
+                    {{ form.password }}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">Sign In</button>
+                </div>
+            </div>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}
