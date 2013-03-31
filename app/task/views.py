@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-from taskapp.models import Task
-from taskapp.forms import TaskForm
+from app.task.models import Task
+from app.task.forms import TaskForm
 
 import json
 

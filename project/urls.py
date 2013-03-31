@@ -6,15 +6,15 @@ from django.contrib import admin
 admin.autodiscover()
 
 import settings
-import taskapp.urls
+import app.task.urls
 
 urlpatterns = patterns('',
 
     # urls specific to this app
-    url(r'^task/', include(taskapp.urls)),
+    url(r'^task/', include(app.task.urls)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 
