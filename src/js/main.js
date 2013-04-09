@@ -69,9 +69,68 @@ $(function(){
         }
     
         if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        	console.log(document.cookie);
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
     });
+    
+    $('body').on('click', '.ajax-modal', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var url   = $this.attr('href');
+        
+
+        $.get(url, function(data) {
+            var dialog = $('<div class="modal hide fade"></div>').appendTo('body');
+            
+            console.log(dialog, data);
+            dialog.append(data.form);
+            dialog.modal();
+
+            
+            $('.ajax-form').ajaxForm({
+                dataType: 'json',
+                success: function(data) {
+                    ajaxFormHandler(data, dialog, $this);
+                }
+            });
+        });
+    }).on('click', '.ajax-post, .ajax-get', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var callback = $this.attr('data-callback');
+
+        $.ajax({
+            type: $this.is('.ajax-post') ? "POST" : "GET",
+            url: $this.attr('href'), 
+            dataType: 'json'
+        }).done(function(data) {
+            if (window[callback]) {
+                window[callback].call($this, data);
+            }
+        });
+    });
+    
+    function ajaxFormHandler(data, dialog, el){
+        if (true === data.success) {
+            dialog.modal('hide');
+            
+            var callback = el.attr('data-callback');
+
+            if (window[callback]) {
+                window[callback].call(el);
+            }
+        } else {
+            dialog.html(data.form).find('form').ajaxForm({
+                dataType: 'json',
+                success: function(data) {
+                    ajaxFormHandler(data, dialog, el);
+                }
+            });
+        }
+    }
 });
 
 function displayAlerts(messages)

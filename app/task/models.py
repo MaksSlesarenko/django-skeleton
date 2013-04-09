@@ -1,6 +1,5 @@
 from django.db import models
 from datetime import datetime
-from django.contrib import admin
 
 
 class Task(models.Model):
@@ -20,9 +19,3 @@ class Task(models.Model):
         """Check if task is complete"""
 
         return self.complete_date is not None
-
-
-class TaskAdmin(admin.ModelAdmin):
-    """Task admin model"""
-
-admin.site.register(Task, TaskAdmin)

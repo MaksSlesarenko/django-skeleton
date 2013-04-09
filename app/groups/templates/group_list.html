@@ -1,0 +1,33 @@
+<thead>
+  <tr>
+      <th>Group</th>
+      <th>Lead</th>
+      <th>Students</th>
+      <th colspan="2">Actions</th>
+  </tr>
+</thead>
+<tbody>
+   {% for group in groups %}
+   <tr>
+      <td>
+          <a href="{% url 'student_home' group.id %}" class="btn btn-link">
+              {{ group.name }}
+          </a>
+      </td>
+      <td>{{ group.lead }}</td>
+      <td>{{ group.num_students }}</td>
+      <td width="100">
+          <a href="{% url 'group_edit' group.id %}" class="btn btn-primary ajax-modal" data-callback="groups_refresh">
+              <i class="icon-white icon-trash"></i>
+              Edit
+          </a>
+      </td>
+      <td width="100">
+          <a href="{% url 'group_delete' group.id %}" class="btn btn-danger ajax-post task-delete" data-callback="groups_refresh">
+              <i class="icon-white icon-trash"></i>
+              Delete
+          </a>
+      </td>
+   </tr>
+{% endfor %}
+</tbody>

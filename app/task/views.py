@@ -1,9 +1,9 @@
 from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.template import RequestContext
 
 from app.task.models import Task
 from app.task.forms import TaskForm
@@ -21,7 +21,7 @@ def home(request):
 
 
 def task_list(request):
-    return render_to_response('list.html', {'tasks': Task.objects.all()})
+    return render_to_response('list.html', {'tasks': Task.objects.all()}, context_instance=RequestContext(request))
 
 
 def task_delete(request, id):

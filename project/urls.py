@@ -8,6 +8,8 @@ admin.autodiscover()
 import settings
 import app.task.urls
 import app.accounts.urls
+import app.students.urls
+import app.groups.urls
 
 urlpatterns = patterns(
     '',
@@ -15,7 +17,9 @@ urlpatterns = patterns(
     # urls specific to this app
     url(r'^task/', include(app.task.urls)),
     url(r'^accounts/', include(app.accounts.urls)),
-
+    url(r'^students/', include(app.students.urls)),
+    url(r'^groups/', include(app.groups.urls)),
+    
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Groups
+{% endblock%}
+
+{% block content %}
+
+<table id="groups-list" class="table table-striped table-bordered">
+    {% include 'group_list.html' %}
+</table>
+
+<p>
+    <a href="{% url 'group_add' %}" class="btn btn-success ajax-modal" data-callback="groups_refresh">
+        <i class="icon-plus icon-white"></i>
+        Add
+    </a>
+</p>
+  
+<script type="text/javascript">
+$(function(){
+    $('#task-add').submit(function(e){
+        e.preventDefault();
+        var $this = $(this);
+        $this.attr('disable', true);
+
+        $.post($this.attr('action') + '?' + $this.serialize(), function(data) {
+            if (data.result) {
+                tasks_refresh();
+
+                $this.get(0).reset();
+            }
+            $this.attr('disable', false);
+        }, 'json');
+    });
+
+    $('#groups-list');
+});
+function groups_refresh()
+{
+    $('#groups-list').load("{% url 'group_list' %}");
+}
+</script>
+{% endblock %}
