@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.template import RequestContext
 
 from app.students.models import Student
 from app.students.forms import StudentForm
@@ -33,7 +34,7 @@ def student_home(request, group_id):
     else:
         template = 'student_home.html'
 
-    return render_to_response(template, {'students': students, 'group_id': group_id})
+    return render_to_response(template, {'students': students, 'group_id': group_id}, context_instance=RequestContext(request))
 
 
 @login_required

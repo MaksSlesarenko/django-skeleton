@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from app.groups.models import Group
 from app.groups.forms import GroupForm, GroupEditForm
+from django.template import RequestContext
 
 from django.template.loader import render_to_string
 
@@ -23,7 +24,7 @@ def group_home(request):
         template = 'group_list.html'
     else:
         template = 'group_home.html'
-    return render_to_response(template, {'groups': groups})
+    return render_to_response(template, {'groups': groups}, context_instance=RequestContext(request))
 
 
 @login_required
