@@ -28,25 +28,25 @@ def group_home(request):
 
 @login_required
 def group_add(request):
+    if request.is_ajax() is False:
+        return HttpResponseRedirect(reverse('group_home'))
+
     form_template = ''
     success = False
 
-    if request.is_ajax():
-        if 'POST' == request.method:
-            form = GroupForm(request.REQUEST)
-            if form.is_valid():
-                group = Group(name=form.cleaned_data['name'])
-                group.save()
+    if 'POST' == request.method:
+        form = GroupForm(request.REQUEST)
+        if form.is_valid():
+            group = Group(name=form.cleaned_data['name'])
+            group.save()
 
-                messages.add_message(request, messages.SUCCESS, 'Added successfully.')
-                success = True
-            else:
-                form_template = render_to_string('group_add.html', {'form': form})
-                messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
+            messages.add_message(request, messages.SUCCESS, 'Added successfully.')
+            success = True
         else:
-            form_template = render_to_string('group_add.html', {'form': GroupForm()})
+            form_template = render_to_string('group_add.html', {'form': form})
+            messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
     else:
-        return HttpResponseRedirect(reverse('group_home'))
+        form_template = render_to_string('group_add.html', {'form': GroupForm()})
 
     return HttpResponse(json.dumps({'form': form_template, 'success': success}), mimetype="application/json")
 

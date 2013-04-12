@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 
 from app.students.models import Student
-from app.students.forms import StudentForm, StudentEditForm
+from app.students.forms import StudentForm
 
 from django.template.loader import render_to_string
 
@@ -45,7 +45,7 @@ def student_add(request, group_id):
     success = False
 
     if 'POST' == request.method:
-        form = StudentForm(request.REQUEST, request.FILES, exclude=('group',))
+        form = StudentForm(request.REQUEST, request.FILES)
         if form.is_valid():
             student = form.save(commit=False)
             student.group_id = group_id
@@ -57,7 +57,7 @@ def student_add(request, group_id):
             form_template = render_to_string('student_add.html', {'form': form, 'group_id': group_id})
             messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
     else:
-        form = StudentForm(exclude=('group',))
+        form = StudentForm()
         form_template = render_to_string('student_add.html', {'form': form, 'group_id': group_id})
 
     return HttpResponse(json.dumps({'form': form_template, 'success': success}), mimetype="application/json")
@@ -77,7 +77,7 @@ def student_edit(request, id):
     success = False
 
     if 'POST' == request.method:
-        form = StudentEditForm(request.REQUEST, request.FILES, instance=student)
+        form = StudentForm(request.REQUEST, request.FILES, instance=student)
         if form.is_valid():
             form.save()
 
@@ -87,7 +87,7 @@ def student_edit(request, id):
             messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
             form_template = render_to_string('student_edit.html', {'form': form})
     else:
-        form = StudentEditForm(instance=student)
+        form = StudentForm(instance=student)
         form_template = render_to_string('student_edit.html', {'form': form})
 
     return HttpResponse(json.dumps({'form': form_template, 'success': success}), mimetype="application/json")
