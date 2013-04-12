@@ -8,7 +8,6 @@
       <th>First name</th>
       <th>Last name</th>
       <th>Birthday</th>
-      <th>Students</th>
       <th colspan="2">Actions</th>
   </tr>
 </thead>
@@ -16,11 +15,9 @@
    {% for student in students %}
    <tr>
       <td>
-          {% edit_list student %}
-          
           {% if student.photo %}
               {% thumbnail student.photo "100x100" crop="center" as im %}
-                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                 <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-polaroid"/>
           {% endif %}
       </td>
       <td>{{ student.uid }}</td>
@@ -28,7 +25,7 @@
       <td>{{ student.last_name }}</td>
       <td>{{ student.birthday }}</td>
       <td width="100">
-          <a href="{% url 'student_edit' student.id %}" class="btn btn-primary ajax-modal" data-callback="students_refresh">
+          <a href="{% edit_list student %}" class="btn btn-primary ajax-modal" data-callback="students_refresh">
               <i class="icon-white icon-trash"></i>
               Edit
           </a>

@@ -34,10 +34,10 @@ class SqlProfiler(object):
         if False == request.is_ajax():
             if response.content.find("text/html"):
                 sql = str(connection.queries)
-                
+
                 sql = sql.replace('{u', "\n").replace('},', "\n")
-                
+
                 #sql = "\n".join(['%s:: %s' % (key, value) for key, value in connection.queries])
-                
+
                 response.content = response.content.replace("</body>", '<pre>' + sql + '</pre></body>')
         return response

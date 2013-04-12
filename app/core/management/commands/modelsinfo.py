@@ -1,10 +1,11 @@
 from django.core.management.base import AppCommand
 from optparse import make_option
 
-class Command( AppCommand ):
+
+class Command(AppCommand):
     option_list = AppCommand.option_list + (
-        make_option('--count', action='store_true', dest='count', default= False,
-            help='Add object count information' ),
+        make_option('--count', action='store_true', dest='count', default=False,
+                    help='Add object count information'),
     )
     help = 'Prints model names for given application and optional object count.'
     args = '[appname ...]'
@@ -16,7 +17,7 @@ class Command( AppCommand ):
 
         lines = []
 
-        for model in get_models( app ):
-            lines.append( "[%s]" % model.__name__ + ( options["count"] and " - %s objects" % model._default_manager.count() or "" ) )
+        for model in get_models(app):
+            lines.append("[%s]" % model.__name__ + (options["count"] and " - %s objects" % model._default_manager.count() or ""))
 
-        return "\n".join( lines )
+        return "\n".join(lines)

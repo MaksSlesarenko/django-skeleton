@@ -19,7 +19,7 @@ urlpatterns = patterns(
     url(r'^accounts/', include(app.accounts.urls)),
     url(r'^students/', include(app.students.urls)),
     url(r'^groups/', include(app.groups.urls)),
-    
+
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
@@ -27,5 +27,7 @@ urlpatterns = patterns(
 
     # catch all, redirect to taskapp home view
     url(r'^$', RedirectView.as_view(url='/task')),
+
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
 )

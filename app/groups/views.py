@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 from app.groups.models import Group
 from app.groups.forms import GroupForm, GroupEditForm
 
@@ -14,19 +14,19 @@ from django.db.models import Count
 import json
 
 
+@login_required
 def group_home(request):
     request.sql_profiler = "asdasdasdasd"
     groups = Group.objects.annotate(num_students=Count('user_to_group'))
 
-    return render_to_response('group_home.html', {'groups': groups})
+    if request.is_ajax():
+        template = 'group_list.html'
+    else:
+        template = 'group_home.html'
+    return render_to_response(template, {'groups': groups})
 
 
-def group_list(request):
-    groups = Group.objects.annotate(num_students=Count('user_to_group'))
-
-    return render_to_response('group_list.html', {'groups': groups})
-
-
+@login_required
 def group_add(request):
     form_template = ''
     success = False
@@ -37,44 +37,51 @@ def group_add(request):
             if form.is_valid():
                 group = Group(name=form.cleaned_data['name'])
                 group.save()
-                
+
                 messages.add_message(request, messages.SUCCESS, 'Added successfully.')
                 success = True
             else:
-                form_template = render_to_string('group_add.html', { 'form': form })
+                form_template = render_to_string('group_add.html', {'form': form})
                 messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
         else:
-            form_template = render_to_string('group_add.html', { 'form': GroupForm() })
+            form_template = render_to_string('group_add.html', {'form': GroupForm()})
     else:
         return HttpResponseRedirect(reverse('group_home'))
 
     return HttpResponse(json.dumps({'form': form_template, 'success': success}), mimetype="application/json")
 
 
+@login_required
 def group_edit(request, id):
+    if request.is_ajax() is False:
+        return HttpResponseRedirect(reverse('group_home'))
+
     form_template = ''
     success = False
 
-    if request.is_ajax():
-        if 'POST' == request.method:
-            form = GroupEditForm(request.REQUEST)
-            if form.is_valid():
-                group = Group(name=form.cleaned_data['name'])
-                group.save()
-                
-                messages.add_message(request, messages.SUCCESS, 'Added successfully.')
-                success = True
-            else:
-                messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
-                form_template = render_to_string('group_edit.html', { 'form': form, 'id': id })
-        else:
-            form_template = render_to_string('group_edit.html', { 'form': GroupEditForm(), 'id': id })
-    else:
+    group = Group.objects.get(id=id)
+
+    if group is None:
         return HttpResponseRedirect(reverse('group_home'))
+
+    if 'POST' == request.method:
+        form = GroupEditForm(request.REQUEST, instance=group)
+        if form.is_valid():
+            form.save()
+
+            messages.add_message(request, messages.SUCCESS, 'Added successfully.')
+            success = True
+        else:
+            messages.add_message(request, messages.ERROR, 'Submited data is not valid.')
+            form_template = render_to_string('group_edit.html', {'form': form})
+    else:
+        form = GroupEditForm(instance=group)
+        form_template = render_to_string('group_edit.html', {'form': form})
 
     return HttpResponse(json.dumps({'form': form_template, 'success': success}), mimetype="application/json")
 
 
+@login_required
 def group_delete(request, id):
 
     if request.is_ajax():

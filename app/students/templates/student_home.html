@@ -20,7 +20,7 @@
 <script type="text/javascript">
 function students_refresh()
 {
-    $('#student-list').load("{% url 'student_list' group_id %}");
+    $('#student-list').load("{% url 'student_home' group_id %}");
 }
 </script>
 {% endblock %}
