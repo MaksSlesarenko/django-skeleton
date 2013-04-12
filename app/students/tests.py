@@ -1,8 +1,5 @@
 """
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
+Test for students and groups
 """
 
 from django.test.client import Client
@@ -15,12 +12,13 @@ from app.students.models import Student
 
 import os
 
+
 class SimpleTest(TestCase):
     group_stub = {'name': 'test_group'}
     user_stub = {'first_name': 'test', 'last_name': 'user', 
                  'birthday': '2013-01-05', 'uid': '12346', 
                  'photo': os.path.dirname(__file__) + '/fixtures/photo.jpg'}
-    
+
     def setUp(self):
         self.user = User.objects.create_user('sm', 'sm@mail.com', '123456')
         
@@ -29,6 +27,9 @@ class SimpleTest(TestCase):
     def tearDown(self):
         self.user.delete()
         
+        Student.objects.all().delete()
+        Group.objects.all().delete()
+
     def login(self):
         self.client.login(username='sm', password='123456')
     

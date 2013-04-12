@@ -44,5 +44,10 @@ def student_delete_logger(sender, **kwargs):
     log.save()
 
 
+def student_remove_photo(sender, **kwargs):
+    kwargs['instance'].photo.delete()
+
+
 post_save.connect(student_save_logger, sender=Student)
 post_delete.connect(student_delete_logger, sender=Student)
+post_delete.connect(student_remove_photo, sender=Student)
