@@ -1,8 +1,8 @@
-from app.task.models import Task
+from app.students.models import Student
 from django.contrib import admin
 
 
-class TaskAdmin(admin.ModelAdmin):
-    """Task admin model"""
+class StudentAdmin(admin.ModelAdmin):
+    """Student admin model"""
 
-admin.site.register(Task, TaskAdmin)
+admin.site.register(Student, StudentAdmin)
